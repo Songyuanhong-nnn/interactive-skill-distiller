@@ -4,25 +4,38 @@
 
 与一次性蒸馏的区别：它会问你问题、会去查资料、会把每一轮对话和决策写进磁盘、能中断后接着来、能增量迭代。
 
+仓库：https://github.com/Songyuanhong-nnn/interactive-skill-distiller
+
 ---
 
 ## 安装
 
 ### 方式一：脚本（推荐）
 
+在**本仓库根目录**执行（clone 或解压后进入该目录）：
+
 ```bash
 # macOS / Linux / Git Bash
-bash interactive-skill-distiller/install.sh
+bash install.sh
 
 # Windows PowerShell
-powershell -ExecutionPolicy Bypass -File .\interactive-skill-distiller\install.ps1
+powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
+
+若你在上一级目录、目录名为 `interactive-skill-distiller`，则改用 `bash interactive-skill-distiller/install.sh`。
 
 默认装到 `~/.workbuddy/skills/interactive-skill-distiller`，可传路径参数改位置。
 
-### 方式二：手动
+### 方式二：git clone
 
-把整个 `interactive-skill-distiller/` 目录复制到：
+```bash
+git clone https://github.com/Songyuanhong-nnn/interactive-skill-distiller.git \
+  ~/.workbuddy/skills/interactive-skill-distiller
+```
+
+### 方式三：手动
+
+把仓库内所有文件复制到：
 
 ```
 ~/.workbuddy/skills/interactive-skill-distiller/
