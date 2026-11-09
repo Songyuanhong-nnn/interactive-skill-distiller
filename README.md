@@ -5,6 +5,7 @@
 与一次性蒸馏的区别：它会问你问题、会去查资料、会把每一轮对话和决策写进磁盘、能中断后接着来、能增量迭代。
 
 仓库：https://github.com/Songyuanhong-nnn/interactive-skill-distiller
+站点：https://songyuanhong-nnn.github.io/interactive-skill-distiller/
 
 ---
 
