@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>交互式技能蒸馏器 · Interactive Skill Distiller</title>
+<meta name="description" content="把模糊想法通过多轮访谈与调研，逐步蒸馏成可执行的 Agent Skill。">
+<meta property="og:title" content="交互式技能蒸馏器">
+<meta property="og:description" content="把模糊想法，问成可执行的 skill。">
+<style>
+  :root{
+    --fg:#1f2328; --muted:#656d76; --line:#d8dee4; --bg:#fff;
+    --code:#f6f8fa; --accent:#0969da; --soft:#f6f8fa;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font:16px/1.65 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  main{max-width:760px;margin:0 auto;padding:64px 24px 96px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em;font-weight:650}
+  .slug{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--muted);margin:0 0 24px}
+  .lead{font-size:21px;line-height:1.45;margin:0 0 10px;font-weight:450}
+  .sub{color:var(--muted);margin:0 0 40px}
+  hr{border:0;border-top:1px solid var(--line);margin:44px 0}
+
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 14px;font-weight:600}
+
+  .cmd{position:relative;background:var(--code);border:1px solid var(--line);border-radius:8px;margin:0 0 8px}
+  .cmd pre{margin:0;padding:16px 88px 16px 16px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13.5px;line-height:1.7}
+  .cmd code{white-space:pre}
+  .cmd button{
+    position:absolute;top:10px;right:10px;padding:5px 12px;font-size:12px;
+    border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:6px;
+    cursor:pointer;font-family:inherit;transition:.15s;
+  }
+  .cmd button:hover{border-color:#afb8c1;color:var(--fg)}
+  .note{font-size:13.5px;color:var(--muted);margin:0}
+  .note code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;background:var(--soft);padding:1.5px 5px;border-radius:4px}
+
+  table{width:100%;border-collapse:collapse;font-size:15px}
+  th,td{text-align:left;padding:9px 12px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-weight:600;color:var(--muted);font-size:13px}
+  td:first-child{color:var(--muted);white-space:nowrap;width:88px}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;list-style:none;padding:0;margin:0}
+  .steps li{border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.5}
+  .steps b{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;color:var(--accent);margin-right:6px;font-weight:600}
+  .steps span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+
+  pre.tree{
+    background:var(--code);border:1px solid var(--line);border-radius:8px;
+    padding:16px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:13px;line-height:1.75;margin:0;color:#424a53;
+  }
+  pre.tree i{color:var(--muted);font-style:normal}
+
+  footer{margin-top:52px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:14px}
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  footer .dot{color:var(--line)}
+
+  @media (max-width:560px){
+    main{padding:40px 18px 64px}
+    h1{font-size:25px}
+    .lead{font-size:18px}
+    .steps{grid-template-columns:1fr 1fr}
+    .cmd pre{padding:14px 14px 14px 14px}
+    .cmd button{position:static;margin:0 0 12px 14px;order:-1}
+    .cmd{display:flex;flex-direction:column-reverse}
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>交互式技能蒸馏器</h1>
+  <p class="slug">interactive-skill-distiller</p>
+
+  <p class="lead">把模糊想法，问成可执行的 skill。</p>
+  <p class="sub">多轮访谈 + 主动调研 + 全程落盘。不一次性贴材料给答案。</p>
+
+  <h2>安装</h2>
+  <div class="cmd">
+    <pre><code id="cmd">git clone https://github.com/Songyuanhong-nnn/interactive-skill-distiller.git \
+  ~/.workbuddy/skills/interactive-skill-distiller</code></pre>
+    <button id="copy" type="button">复制</button>
+  </div>
+  <p class="note">或用脚本：<code>bash install.sh</code> · 重启会话生效</p>
+
+  <hr>
+
+  <h2>差别</h2>
+  <table>
+    <thead><tr><th></th><th>一次性蒸馏</th><th>本 skill</th></tr></thead>
+    <tbody>
+      <tr><td>输入</td><td>需先整理好知识</td><td>一个念头即可</td></tr>
+      <tr><td>提问</td><td>不问，猜着写</td><td>一次一件，带推荐项</td></tr>
+      <tr><td>信息</td><td>只用你给的</td><td>主动查规范与同类实现</td></tr>
+      <tr><td>过程</td><td>写完才看到</td><td>先给 25 行骨架</td></tr>
+      <tr><td>记录</td><td>无</td><td>每轮落盘，可恢复</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>流程</h2>
+  <ol class="steps">
+    <li><b>P0</b>立项<span>三句话讲清问题</span></li>
+    <li><b>P1</b>调研<span>术语 · 同类 · 反例</span></li>
+    <li><b>P2</b>访谈<span>七个维度逐轮推</span></li>
+    <li><b>P3</b>骨架<span>25 行先对齐</span></li>
+    <li><b>P4</b>写作<span>写作 + 失忆测试</span></li>
+    <li><b>P5</b>迭代<span>增量 patch，留快照</span></li>
+  </ol>
+
+  <hr>
+
+  <h2>会话档案</h2>
+<pre class="tree">.skill-distill/sessions/&lt;case-id&gt;/
+├── state.yaml      <i>阶段 / 已确认维度 / 版本</i>
+├── journal.md      <i>问答流水，只增不改</i>
+├── research.md     <i>每条须写"改变了什么"</i>
+├── decisions.md    <i>决策 + 被否决的方案</i>
+└── iterations/     <i>v1.0 / v1.1 …</i></pre>
+
+  <footer>
+    <a href="https://github.com/Songyuanhong-nnn/interactive-skill-distiller">GitHub</a>
+    <span class="dot">·</span>
+    <a href="https://github.com/Songyuanhong-nnn/interactive-skill-distiller/blob/main/SKILL.md">SKILL.md</a>
+    <span class="dot">·</span>
+    <span style="color:var(--muted)">MIT · v1.0.0</span>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    var btn = document.getElementById('copy');
+    var src = document.getElementById('cmd');
+    if (!btn || !src) return;
+    btn.addEventListener('click', function () {
+      var text = src.textContent;
+      var done = function () {
+        btn.textContent = '已复制';
+        setTimeout(function () { btn.textContent = '复制'; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+  })();
+</script>
+</body>
+</html>
