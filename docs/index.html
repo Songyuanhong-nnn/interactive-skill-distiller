@@ -28,15 +28,13 @@
 
   h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 14px;font-weight:600}
 
-  .cmd{position:relative;background:var(--code);border:1px solid var(--line);border-radius:8px;margin:0 0 8px}
-  .cmd pre{margin:0;padding:16px 88px 16px 16px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13.5px;line-height:1.7}
+  .cmd{background:var(--code);border:1px solid var(--line);border-radius:8px;margin:0 0 8px;overflow:hidden}
+  .cmd-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 10px 6px 14px;border-bottom:1px solid var(--line);background:#eef1f4}
+  .cmd-bar span{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11.5px;color:var(--muted);letter-spacing:.05em}
+  .cmd-bar button{padding:3px 10px;font-size:12px;border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:5px;cursor:pointer;font-family:inherit;transition:.15s}
+  .cmd-bar button:hover{border-color:#afb8c1;color:var(--fg)}
+  .cmd pre{margin:0;padding:14px 16px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;line-height:1.7}
   .cmd code{white-space:pre}
-  .cmd button{
-    position:absolute;top:10px;right:10px;padding:5px 12px;font-size:12px;
-    border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:6px;
-    cursor:pointer;font-family:inherit;transition:.15s;
-  }
-  .cmd button:hover{border-color:#afb8c1;color:var(--fg)}
   .note{font-size:13.5px;color:var(--muted);margin:0}
   .note code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;background:var(--soft);padding:1.5px 5px;border-radius:4px}
 
@@ -67,9 +65,7 @@
     h1{font-size:25px}
     .lead{font-size:18px}
     .steps{grid-template-columns:1fr 1fr}
-    .cmd pre{padding:14px 14px 14px 14px}
-    .cmd button{position:static;margin:0 0 12px 14px;order:-1}
-    .cmd{display:flex;flex-direction:column-reverse}
+    .cmd pre{padding:12px 14px;font-size:12.5px}
   }
 </style>
 </head>
@@ -83,9 +79,9 @@
 
   <h2>安装</h2>
   <div class="cmd">
+    <div class="cmd-bar"><span>bash</span><button id="copy" type="button">复制</button></div>
     <pre><code id="cmd">git clone https://github.com/Songyuanhong-nnn/interactive-skill-distiller.git \
   ~/.workbuddy/skills/interactive-skill-distiller</code></pre>
-    <button id="copy" type="button">复制</button>
   </div>
   <p class="note">或用脚本：<code>bash install.sh</code> · 重启会话生效</p>
 
