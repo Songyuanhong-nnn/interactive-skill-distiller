@@ -1,8 +1,16 @@
-# 交互式技能蒸馏器 (Interactive Skill Distiller)
+# 交互式引导引擎 (Interactive Guide Engine)
 
-把一个模糊想法、工作流或经验，通过**多轮对话引导 + 主动调研**，一步步蒸馏成可执行的 Agent Skill（`SKILL.md`）。
+> 安装名仍是 `interactive-skill-distiller`——这是历史包袱，最早它只做技能蒸馏。
 
-与一次性蒸馏的区别：它会问你问题、会去查资料、会把每一轮对话和决策写进磁盘、能中断后接着来、能增量迭代。
+一句话进来，先判断你要什么，再决定怎么陪你走：
+
+| 你说话的样子 | 走哪条 | 产出 |
+|---|---|---|
+| "我想做一个 skill"、"这套流程固化下来" | **A 蒸馏** | 可复用的 `SKILL.md` |
+| "帮我写/整理/做 X，但不知道从哪下手" | **B 引导执行** | 这一次要的交付物 |
+| "帮我规划"、"排个计划"、"接下来怎么走" | **C 规划** | 行动序列 + 判据 + 依赖 |
+
+三条路共用一个入口、一套档案、一种提问纪律。每轮落盘，中断可恢复，可增量迭代。
 
 仓库：https://github.com/Songyuanhong-nnn/interactive-skill-distiller
 站点：https://songyuanhong-nnn.github.io/interactive-skill-distiller/
@@ -36,45 +44,44 @@ git clone https://github.com/Songyuanhong-nnn/interactive-skill-distiller.git \
 
 ### 方式三：手动
 
-把仓库内所有文件复制到：
-
-```
-~/.workbuddy/skills/interactive-skill-distiller/
-```
-
-或项目级：`<项目根>/.workbuddy/skills/interactive-skill-distiller/`
-
-装完重启会话或重新索引即可被识别。
+把仓库内所有文件复制到 `~/.workbuddy/skills/interactive-skill-distiller/`，或项目级 `<项目根>/.workbuddy/skills/` 下。装完重启会话或重新索引即可被识别。
 
 ---
 
 ## 怎么用
 
-直接说人话就行，不需要叫 skill 名字：
+直接说人话，不用叫 skill 名字：
 
 ```
-我有个想法想做成的 skill，但还没想清楚，帮我一步步聊出来
-把"每周竞品监控"这套流程固化成 skill
-继续上次那个竞品监控的 skill，加一个自动生成周报的能力
-看看那个 skill 的档案，当时为什么把触发词定成这样
+我想做一个 skill，帮我把每周竞品监控这套流程固化下来
+帮我写一份行业分析，但我不确定从哪下手
+帮我规划一下接下来三个月该做哪些事
 ```
 
-触发词：`我想做一个 skill`、`把这个想法变成技能`、`这套流程想固化下来`、`帮我把经验沉淀成 skill`、`继续上次那个技能`、`给这个 skill 补点东西`。
+触发词：`我想做一个 skill`、`这套流程固化下来`、`帮我沉淀成技能`、`帮我写 X 但不知道从哪开始`、`带我一步步来`、`帮我规划`、`排个计划`、`接下来怎么走`、`继续上次那个`。
 
 ---
 
-## 它会怎么和你聊
+## 它怎么跟你聊
 
 每轮只问一件事，回复固定四段：
 
 ```
-【进度】P2 访谈 · 维度 4/7 · 已确认 3 项 / 待定 2 项
+【进度】B · G2 第 2 步 · 已确认 3 项 / 待定 1 项
 【本轮所得】……
 【调研补充】……
 【请你定一件事】……（2–3 个选项 + 推荐项）
 ```
 
-六阶段：`P0 立项` → `P1 调研` → `P2 七维度访谈` → `P3 骨架确认` → `P4 写作校验` → `P5 安装迭代`
+三条路线的阶段：
+
+```
+A 蒸馏    P0 立项 → P1 调研 → P2 七维访谈 → P3 骨架 → P4 写作校验 → P5 安装
+B 执行    G0 定终点 → G1 拆步 → G2 逐步做（一步一交付）→ G3 收尾校验 → G4 归档
+C 规划    L0 定边界 → L1 两条候选路 → L2 拆里程碑 → L3 出计划 → L4 转执行
+```
+
+路线会换：做着做着发现"这事每周都要来一遍"，就从 B 升到 A，已有交付物直接当样例。
 
 ---
 
@@ -84,11 +91,11 @@ git clone https://github.com/Songyuanhong-nnn/interactive-skill-distiller.git \
 
 | 文件 | 作用 |
 |---|---|
-| `state.yaml` | 唯一状态源：阶段、已确认维度、版本、status |
+| `state.yaml` | 唯一状态源：intent、阶段、已确认项、版本 |
 | `journal.md` | 逐轮对话流水，append-only |
-| `research.md` | 调研台账，每条必须写"改变了什么" |
 | `decisions.md` | 设计决策 + 被否决的方案 + 理由 |
-| `problem.md` | P0 的三句话问题陈述 |
+| `research.md` | 调研台账，每条须写"改变了什么" |
+| `problem.md` / `goal.md` / `plan.md` | 三条路线各自的主产出 |
 | `iterations/` | 每个交付版本快照，可回滚 |
 
 加 `--store skill` 可把档案放进 skill 目录随身携带。
@@ -99,16 +106,20 @@ git clone https://github.com/Songyuanhong-nnn/interactive-skill-distiller.git \
 
 ```
 interactive-skill-distiller/
-├── SKILL.md                          主文件（六阶段流程）
-├── README.md                         本文件
-├── install.sh / install.ps1          安装脚本
+├── SKILL.md                          主文件（路由 + 三条路线）
+├── README.md
+├── install.sh / install.ps1
 ├── references/
-│   ├── interview-playbook.md         七维度问题库 + 追问话术
-│   ├── research-playbook.md          调研套路 + 台账格式
-│   ├── validation.md                 校验清单（硬性/建议/会话特有）
+│   ├── routing.md                    意图判断信号表
+│   ├── interview-playbook.md         A：七维度问题库
+│   ├── research-playbook.md          A：调研套路
+│   ├── guide-playbook.md             B：G0–G4 细节
+│   ├── plan-playbook.md              C：L0–L4 细节
+│   ├── validation.md                 校验清单（A–F）
 │   └── journal-protocol.md           档案协议 + 版本规则
 ├── assets/
-│   └── skill.template.md             目标 skill 起稿模板
+│   ├── skill.template.md             目标 skill 起稿模板
+│   └── plan.template.md              计划表模板
 └── scripts/
     └── distill_init.py               一键建 case（幂等）
 ```
@@ -117,6 +128,6 @@ interactive-skill-distiller/
 
 ## 来源
 
-改造自 [Minksgo/AgentSkill](https://github.com/Minksgo/AgentSkill) 的一次性蒸馏流水线，遵循 [Agent Skills 规范](https://agentskills.io/specification)。
+起点是 [Minksgo/AgentSkill](https://github.com/Minksgo/AgentSkill) 的一次性蒸馏流水线，遵循 [Agent Skills 规范](https://agentskills.io/specification)。v2 起从"蒸馏器"扩成"引导引擎"，三类意图共用一个入口。
 
-v1.0.0 · 2026-11-09
+v2.0.0 · 2026-11-12

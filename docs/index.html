@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>交互式技能蒸馏器 · Interactive Skill Distiller</title>
-<meta name="description" content="把模糊想法通过多轮访谈与调研，逐步蒸馏成可执行的 Agent Skill。">
-<meta property="og:title" content="交互式技能蒸馏器">
-<meta property="og:description" content="把模糊想法，问成可执行的 skill。">
+<title>交互式引导引擎 · Interactive Guide Engine</title>
+<meta name="description" content="一句话进来先判断意图：蒸馏成可复用的 skill、引导你把任务做完、或产出一份能开工的计划。">
+<meta property="og:title" content="交互式引导引擎">
+<meta property="og:description" content="一句话进来，先判断你要什么。">
 <style>
   :root{
     --fg:#1f2328; --muted:#656d76; --line:#d8dee4; --bg:#fff;
@@ -35,6 +35,13 @@
   .cmd-bar button:hover{border-color:#afb8c1;color:var(--fg)}
   .cmd pre{margin:0;padding:14px 16px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;line-height:1.7}
   .cmd code{white-space:pre}
+
+  .routes{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .route{display:flex;align-items:baseline;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .route:last-child{border-bottom:0}
+  .route>b{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;color:var(--accent);flex:none;width:12px;font-weight:600}
+  .route>span{font-size:14px;flex:none;width:62px}
+  .route>code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;color:var(--muted);line-height:1.6;flex:1;min-width:0}
   .note{font-size:13.5px;color:var(--muted);margin:0}
   .note code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;background:var(--soft);padding:1.5px 5px;border-radius:4px}
 
@@ -71,11 +78,11 @@
 </head>
 <body>
 <main>
-  <h1>交互式技能蒸馏器</h1>
+  <h1>交互式引导引擎</h1>
   <p class="slug">interactive-skill-distiller</p>
 
-  <p class="lead">把模糊想法，问成可执行的 skill。</p>
-  <p class="sub">多轮访谈 + 主动调研 + 全程落盘。不一次性贴材料给答案。</p>
+  <p class="lead">一句话进来，先判断你要什么。</p>
+  <p class="sub">三条路：蒸馏成可复用的 skill、引导你把事做完、出一份能开工的计划。共用档案，全程落盘。</p>
 
   <h2>安装</h2>
   <div class="cmd">
@@ -87,29 +94,24 @@
 
   <hr>
 
-  <h2>差别</h2>
+  <h2>三条路</h2>
   <table>
-    <thead><tr><th></th><th>一次性蒸馏</th><th>本 skill</th></tr></thead>
+    <thead><tr><th></th><th>产出</th><th>结束标志</th></tr></thead>
     <tbody>
-      <tr><td>输入</td><td>需先整理好知识</td><td>一个念头即可</td></tr>
-      <tr><td>提问</td><td>不问，猜着写</td><td>一次一件，带推荐项</td></tr>
-      <tr><td>信息</td><td>只用你给的</td><td>主动查规范与同类实现</td></tr>
-      <tr><td>过程</td><td>写完才看到</td><td>先给 25 行骨架</td></tr>
-      <tr><td>记录</td><td>无</td><td>每轮落盘，可恢复</td></tr>
+      <tr><td>A 蒸馏</td><td>可复用的 SKILL.md</td><td>装进 skills 目录</td></tr>
+      <tr><td>B 执行</td><td>这一次要的交付物</td><td>过了终点判据</td></tr>
+      <tr><td>C 规划</td><td>行动序列 + 判据 + 依赖</td><td>认可后可直接开工</td></tr>
     </tbody>
   </table>
 
   <hr>
 
-  <h2>流程</h2>
-  <ol class="steps">
-    <li><b>P0</b>立项<span>三句话讲清问题</span></li>
-    <li><b>P1</b>调研<span>术语 · 同类 · 反例</span></li>
-    <li><b>P2</b>访谈<span>七个维度逐轮推</span></li>
-    <li><b>P3</b>骨架<span>25 行先对齐</span></li>
-    <li><b>P4</b>写作<span>写作 + 失忆测试</span></li>
-    <li><b>P5</b>迭代<span>增量 patch，留快照</span></li>
-  </ol>
+  <h2>路线</h2>
+  <div class="routes">
+    <div class="route"><b>A</b><span>蒸馏</span><code>P0 立项 · P1 调研 · P2 访谈 · P3 骨架 · P4 写作 · P5 安装</code></div>
+    <div class="route"><b>B</b><span>引导执行</span><code>G0 定终点 · G1 拆步 · G2 逐步做 · G3 校验 · G4 归档</code></div>
+    <div class="route"><b>C</b><span>规划</span><code>L0 边界 · L1 两条候选路 · L2 拆里程碑 · L3 出计划 · L4 转执行</code></div>
+  </div>
 
   <hr>
 
@@ -126,7 +128,7 @@
     <span class="dot">·</span>
     <a href="https://github.com/Songyuanhong-nnn/interactive-skill-distiller/blob/main/SKILL.md">SKILL.md</a>
     <span class="dot">·</span>
-    <span style="color:var(--muted)">MIT · v1.0.0</span>
+    <span style="color:var(--muted)">MIT · v2.0.0</span>
   </footer>
 </main>
 

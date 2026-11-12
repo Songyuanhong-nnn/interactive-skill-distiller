@@ -9,7 +9,9 @@
 ```
 <case-dir>/
 ├── state.yaml        机器可读的进度（唯一状态源）
-├── problem.md        P0 问题陈述（三句话）
+├── problem.md        A：问题陈述（三句话）
+├── goal.md           B：终点判据（形态 / 读者 / 通过线）
+├── plan.md           C：候选路 + 选定方案 + 里程碑表
 ├── journal.md        对话流水，append-only
 ├── research.md       调研台账，append-only
 ├── decisions.md      设计决策与否决记录，append-only
@@ -33,7 +35,9 @@ title: 每周竞品监控
 created: 2026-11-09T13:20:00+08:00
 updated: 2026-11-09T14:05:00+08:00
 status: active          # active | paused | done | abandoned
-phase: P2               # P0 P1 P2 P3 P4 P5
+intent: A               # A 蒸馏 | B 引导执行 | C 规划
+phase: P2               # A: P0–P5 | B: G0–G4 | C: L0–L4
+intent_history: []      # 换道记录：[{from, to, reason, at}]
 version: v0.5           # 当前草稿版本
 skill_name: weekly-competitor-monitor
 target: user            # user | project
@@ -58,6 +62,7 @@ last_journal_line: 47   # 用于续写定位
 规则：
 - `state.yaml` 是**唯一状态源**。恢复会话只读它，不靠翻聊天记录。
 - 每轮对话结束更新一次 `updated`、`phase`、`confirmed`、`last_journal_line`。
+- `intent` 只在开场判一次；换道时改值并往 `intent_history` 追加，不覆盖历史。
 - `status: done` 之后仍可被 REFINE 唤醒，改回 `active`。
 
 ---
@@ -152,3 +157,26 @@ append-only，只增不改。每次会话开头写分隔头，之后每轮一条
 5. 从 `dimensions_pending` 第一条继续，不要重头问
 
 不要要求用户复述之前说过的东西——档案里有。
+
+---
+
+## 三条路线的档案差异
+
+底座一样，只有主产出文件不同。恢复时先读 `intent`，就知道该看哪个。
+
+| 文件 | A 蒸馏 | B 引导执行 | C 规划 |
+|---|---|---|---|
+| `problem.md` | 必填（P0） | — | — |
+| `goal.md` | — | 必填（G0） | 可复用（目标一致） |
+| `plan.md` | — | — | 必填（L1–L3） |
+| `research.md` | 必填 ≥3 条 | 按需 | 按需 |
+| `SKILL.draft.md` | 必填 | — | — |
+| `iterations/` | v1.0 = SKILL.md | v1.0 = 交付物 | v1.0 = plan.md |
+
+**换道时的文件迁移**（不删旧文件，只改用途）：
+
+- B → A：`goal.md` 直接改写成 `problem.md`，交付物进 `iterations/` 当样例
+- C → B：`plan.md` 的里程碑直接变成 G1 的步骤，`goal.md` 从计划目标抄一行
+- A → B：`problem.md` 的三句话里第三句就是 `goal.md` 的通过线
+
+**恢复会话时**：`intent` 决定读哪个主文件，`phase` 决定从哪继续。两个都读，缺一不可。
